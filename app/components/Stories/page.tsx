@@ -26,7 +26,7 @@ const SuccessStories: React.FC = () => {
   useEffect(() => {
     const fetchStories = async () => {
       try {
-        const response = await axios.get('https://a2sv-backend.onrender.com/api/success-stories');
+        const response = await axios.get('http://blogapp.tryasp.net/api/success-stories');
         setStories(response.data);
       } catch (err) {
         setError('Failed to fetch success stories');
@@ -38,22 +38,22 @@ const SuccessStories: React.FC = () => {
     fetchStories();
   }, []);
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>{error}</div>;
+  if (loading) return <div className="flex justify-center items-center h-screen">Loading...</div>;
+  if (error) return <div className="flex justify-center items-center h-screen">{error}</div>;
 
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-3xl font-bold mb-4">Success Stories</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <h1 className="text-4xl font-bold mb-8 text-center text-gray-800">Success Stories</h1>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {stories.map((story) => (
-          <div key={story._id} className="border p-4 rounded-lg shadow-md">
+          <div key={story._id} className="border p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
             <img src={story.imgURL} alt={story.personName} className="w-full h-48 object-cover rounded-lg mb-4" />
-            <h2 className="text-xl font-semibold">{story.personName}</h2>
-            <p className="text-gray-700">{story.role}</p>
-            <p className="text-gray-500">{story.location}</p>
+            <h2 className="text-2xl font-semibold mb-2 text-gray-900">{story.personName}</h2>
+            <p className="text-gray-700 mb-2">{story.role}</p>
+            <p className="text-gray-500 mb-4">{story.location}</p>
             {story.story.map((s) => (
               <div key={s._id} className="mt-2">
-                <h3 className="text-lg font-semibold">{s.heading}</h3>
+                <h3 className="text-lg font-semibold text-gray-800">{s.heading}</h3>
                 <p className="text-gray-700">{s.paragraph}</p>
               </div>
             ))}

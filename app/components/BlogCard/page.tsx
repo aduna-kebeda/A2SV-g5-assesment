@@ -1,26 +1,31 @@
 import Link from 'next/link';
-
-interface Author {
-  image: string;
-  name: string;
-  role: string;
-}
-
-interface Blog {
-  _id: string;
-  image: string;
-  title: string;
-  description: string;
-  author: Author | null;
-  createdAt: string;
-  skills: string[];
-}
+import Blog from '../../../type/blog'
 
 interface BlogCardProps {
   blog: Blog;
+  loading: boolean;
 }
 
-const BlogCard: React.FC<BlogCardProps> = ({ blog }) => {
+const Shimmer: React.FC = () => {
+  return (
+    <div className="animate-pulse flex space-x-4">
+      <div className="rounded-full bg-gray-200 h-12 w-12"></div>
+      <div className="flex-1 space-y-4 py-1">
+        <div className="h-4 bg-gray-200 rounded w-3/4"></div>
+        <div className="space-y-2">
+          <div className="h-4 bg-gray-200 rounded"></div>
+          <div className="h-4 bg-gray-200 rounded w-5/6"></div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const BlogCard: React.FC<BlogCardProps> = ({ blog, loading }) => {
+  if (loading) {
+    return <Shimmer />;
+  }
+
   // Fallback values for author details
   const authorImage = blog.author?.image || '/default-author-image.png';
   const authorName = blog.author?.name || 'Unknown Author';

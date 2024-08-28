@@ -1,7 +1,7 @@
 'use client';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { filterBlogs }from '../../store/blogSlice';
+import { filterBlogs } from '../../store/blogSlice';
 
 const SearchBar: React.FC = () => {
   const [query, setQuery] = useState('');

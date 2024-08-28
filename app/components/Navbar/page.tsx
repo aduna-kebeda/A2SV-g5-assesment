@@ -33,10 +33,10 @@ const Navbar: React.FC = () => {
           <Link href="/" className={`${linkClasses('/')} font-montserrat text-[20px] font-semibold leading-[24.38px] text-center`}>
             Home
           </Link>
-          <Link href="/Teams" className={`${linkClasses('/Teams')} font-montserrat text-[20px] font-semibold leading-[24.38px] text-center`}>
+          <Link href="/components/Teams" className={`${linkClasses('/Teams')} font-montserrat text-[20px] font-semibold leading-[24.38px] text-center`}>
            Teams
           </Link>
-          <Link href="/Stories" className={`${linkClasses('/Stories')} font-montserrat text-[20px] font-semibold leading-[24.38px] text-center`}>
+          <Link href="/components/Stories" className={`${linkClasses('/Stories')} font-montserrat text-[20px] font-semibold leading-[24.38px] text-center`}>
             Success Stories
           </Link>
           <Link href="/about" className={`${linkClasses('/about')} font-montserrat text-[20px] font-semibold leading-[24.38px] text-center`}>

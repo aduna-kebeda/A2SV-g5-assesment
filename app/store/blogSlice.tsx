@@ -1,28 +1,6 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
+import Blog from '../../type/blog';
 
-interface Author {
-  _id: string;
-  name: string;
-  email: string;
-  image: string;
-  role: string;
-}
-
-interface Blog {
-  _id: string;
-  image: string;
-  title: string;
-  description: string;
-  author: Author | null;
-  isPending: boolean;
-  tags: string[];
-  likes: number;
-  relatedBlogs: Blog[]; // Adjust based on related blogs structure if needed
-  skills: string[];
-  content: string;
-  createdAt: string;
-  updatedAt: string;
-}
 
 interface BlogState {
   blogs: Blog[];
@@ -42,14 +20,14 @@ const initialState: BlogState = {
 
 // Define a thunk for fetching blogs
 export const fetchBlogs = createAsyncThunk('blogs/fetchBlogs', async () => {
-  const response = await fetch('https://a2sv-backend.onrender.com/api/blogs');
+  const response = await fetch('http://blogapp.tryasp.net/api/blogs');
   if (!response.ok) throw new Error('Failed to fetch blogs');
   return response.json();
 });
 
 // Define a thunk for fetching a single blog by ID
 export const fetchBlogById = createAsyncThunk('blogs/fetchBlogById', async (id: string) => {
-  const response = await fetch(`https://a2sv-backend.onrender.com/api/blogs/${id}`);
+  const response = await fetch(`http://blogapp.tryasp.net/api/blogs/${id}`);
   if (!response.ok) throw new Error('Failed to fetch blog');
   return response.json();
 });
@@ -58,7 +36,7 @@ export const fetchBlogById = createAsyncThunk('blogs/fetchBlogById', async (id: 
 export const fetchRelatedBlogsBySkills = createAsyncThunk(
   'blogs/fetchRelatedBlogsBySkills',
   async (skills: string[]) => {
-    const response = await fetch('https://a2sv-backend.onrender.com/api/related-blogs', {
+    const response = await fetch('http://blogapp.tryasp.net/api/related-blogs', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ skills })
@@ -71,7 +49,16 @@ export const fetchRelatedBlogsBySkills = createAsyncThunk(
 const blogSlice = createSlice({
   name: 'blogs',
   initialState,
-  reducers: {},
+  reducers: {
+    filterBlogs: (state, action: PayloadAction<string>) => {
+      const query = action.payload.toLowerCase();
+      state.blogs = state.blogs.filter(blog =>
+        blog.title.toLowerCase().includes(query) ||
+        blog.description.toLowerCase().includes(query) ||
+        blog.skills.some(skill => skill.toLowerCase().includes(query))
+      );
+    }
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchBlogs.pending, (state) => {
@@ -116,4 +103,6 @@ const blogSlice = createSlice({
   },
 });
 
+
+export const { filterBlogs } = blogSlice.actions;
 export default blogSlice.reducer;

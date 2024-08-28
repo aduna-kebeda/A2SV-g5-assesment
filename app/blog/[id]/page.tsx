@@ -2,11 +2,15 @@
 import React, { useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import { useSelector, useDispatch } from 'react-redux';
-import { RootState } from '../../store';
+import { AppDispatch, RootState } from '../../store';
 import { fetchBlogById } from '../../store/blogSlice';
 import Navbar from '../../components/Navbar/page';
 import Footer from '../../components/Footer/page';
 import Card from '../card/page';
+import { Dispatch } from 'redux';
+import { Interface } from 'readline';
+import Blog from '../../../type/blog'
+
 
 interface BlogDetailPageProps {
   selectedBlog: Blog | null;
@@ -16,14 +20,14 @@ interface BlogDetailPageProps {
 
 const BlogDetailPage: React.FC = () => {
   const { id } = useParams(); // Extracting the id directly from the URL
-  const dispatch = useDispatch();
+  const dispatch:AppDispatch = useDispatch()
   const { selectedBlog, loading, error } = useSelector((state: RootState) => state.blogs);
   const skills = selectedBlog?.skills || [];
 
   useEffect(() => {
     if (id) {
       console.log(`Fetching blog with ID: ${id}`);
-      dispatch(fetchBlogById(id));
+      dispatch(fetchBlogById(id.toString()));
     }
   }, [id, dispatch]);
 
@@ -44,7 +48,7 @@ const BlogDetailPage: React.FC = () => {
         ) : error ? (
           <p>Error: {error}</p>
         ) : selectedBlog ? (
-          <BlogContent selectedBlog={selectedBlog} />
+          <BlogContent selectedBlog={selectedBlog} loading={false} error={null} />
         ) : (
           <p>No blog found. Please ensure the ID is correct and that the blog data is available.</p>
         )}
@@ -105,7 +109,7 @@ const BlogContent: React.FC<BlogDetailPageProps> = ({ selectedBlog }) => {
         <h2 className="text-2xl text-start font-semibold mb-4">Related Blogs</h2>
         <div className="flex flex-wrap gap-4 justify-center">
             {relatedBlogs.map((relatedBlog) => (
-            <Card key={relatedBlog._id} blog={relatedBlog} />
+            <Card key={relatedBlog._id} id={relatedBlog._id} blog={relatedBlog} />
             ))}
         </div>
       </section>

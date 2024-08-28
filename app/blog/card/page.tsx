@@ -1,31 +1,14 @@
 'use client';
 import React, { useState } from 'react';
 import Link from 'next/link';
-
-interface Author {
-  image: string;
-  name: string;
-  role: string;
-}
-
-interface Blog {
-  _id: string;
-  image: string;
-  title: string;
-  description: string;
-  author: Author | null;
-  createdAt: string;
-  skills: string[];
-  likes: number;
-  // comments: number;
-}
+import Blog from '../../../type/blog'
 
 interface CardProps {
+  id:string;
   blog: Blog;
 }
 
-const Card: React.FC<CardProps> = ({ blog }) => {
-  // Fallback values for author details
+const Card: React.FC<CardProps> = ({ blog,id }) => {
   const authorImage = blog.author?.image || '/default-author-image.png';
   const authorName = blog.author?.name || 'Unknown Author';
   const postDate = new Date(blog.createdAt).toDateString();
@@ -92,8 +75,6 @@ const Card: React.FC<CardProps> = ({ blog }) => {
           {/* Footer: Like and Comment Count */}
           <div className="p-4 flex justify-between items-center text-gray-600">
             <span className="text-sm">{blog.likes} Likes</span>
-            <span className="text-sm">{blog.comments} Comments</span>
-            {/* Toggle Read More Button */}
             {blog.description.length > maxDescriptionLength && (
               <button
                 onClick={toggleDescription}
